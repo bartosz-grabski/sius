@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>CamelBookshop</groupId>
+  <artifactId>CamelBookshop</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <!-- VERSIONS -->
+  <properties>
+    <camel-version>2.11.0</camel-version>
+    <activemq-version>5.4.0</activemq-version>    
+    <xbean-spring-version>3.7</xbean-spring-version>
+  </properties>
+
+  
+  <!-- DEPENDENCIES -->
+ 	<dependencies>
+ 	
+  	    <!-- Camel core -->     
+	    <dependency>
+	    	<groupId>org.apache.camel</groupId>
+	      	<artifactId>camel-core</artifactId>
+	      	<version>${camel-version}</version>
+	    </dependency>
+	    
+   	    <!-- Camel stream -->
+	    <dependency>
+		    <groupId>org.apache.camel</groupId>
+		    <artifactId>camel-stream</artifactId>
+		    <version>${camel-version}</version>		    
+		</dependency>
+	    
+   		<!-- Camel jetty -->
+		<dependency>
+	    	<groupId>org.apache.camel</groupId>
+	    	<artifactId>camel-jetty</artifactId>
+	    	<version>${camel-version}</version>
+		</dependency>
+		
+  		<!-- Camel jms -->
+  		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-jms</artifactId>
+			<version>${camel-version}</version>	
+		</dependency>
+		
+  	    <!-- Camel ActiveMQ -->            
+	    <dependency>
+	      	<groupId>org.apache.activemq</groupId>
+	      	<artifactId>activemq-camel</artifactId>
+	      	<version>${activemq-version}</version>
+	    </dependency>
+	  
+  		<!-- Embedded ActiveMQ broker -->
+	    <dependency>
+	      	<groupId>org.apache.activemq</groupId>
+	      	<artifactId>activemq-core</artifactId>
+	      	<version>${activemq-version}</version>
+	    </dependency>
+	  
+  	 	<!-- Camel jaxb -->            
+	    <dependency>
+	  		<groupId>org.apache.camel</groupId>
+	  		<artifactId>camel-jaxb</artifactId>
+	  		<version>${camel-version}</version>
+		</dependency>
+	  
+  		<!-- Camel xmpp -->
+		<dependency>
+	    	<groupId>org.apache.camel</groupId>
+	    	<artifactId>camel-xmpp</artifactId>
+	    	<version>${camel-version}</version>
+		</dependency>
+		
+		<!-- Camel csv --> 
+		<dependency>
+	      	<groupId>org.apache.camel</groupId>
+	      	<artifactId>camel-csv</artifactId>
+	      	<version>${camel-version}</version>
+	    </dependency>
+  
+  		<!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>   
+         
+        <dependency>
+			<groupId>log4j</groupId>		
+			<artifactId>log4j</artifactId>		
+			<version>1.2.16</version>	
+		</dependency>    
+		
+		<dependency> 
+		  	<groupId>org.slf4j</groupId>
+		  	<artifactId>slf4j-log4j12</artifactId>
+		  	<version>1.7.7</version>
+		</dependency>
+  
+  	</dependencies>
+ 
+  
+</project>
