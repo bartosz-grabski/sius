@@ -1,0 +1,146 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="most-seen-letter">
+	<start to="calc-mean-roaming-call" />
+	<action name="calc-mean-roaming-call">
+		<map-reduce>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<prepare>
+				<delete path="${nameNode}${outputDir}" />
+				<delete path="${nameNode}${intermediateDir}" />
+			</prepare>
+			<configuration>
+				<property>
+					<name>mapred.mapper.new-api</name>
+					<value>true</value>
+				</property>
+				<property>
+					<name>mapred.reducer.new-api</name>
+					<value>true</value>
+				</property>
+				<property>
+					<name>mapred.job.queue.name</name>
+					<value>${queueName}</value>
+				</property>
+				<property>
+					<name>mapreduce.job.map.class</name>
+					<value>pl.edu.agh.wieit.sius.big_data_1.MeanRoamingCostMapper</value>
+				</property>
+				<property>
+					<name>mapreduce.job.combine.class</name>
+					<value>pl.edu.agh.wieit.sius.big_data_1.MeanRoamingCostReducer</value>
+				</property>
+				<property>
+					<name>mapreduce.job.reduce.class</name>
+					<value>pl.edu.agh.wieit.sius.big_data_1.MeanRoamingCostReducer</value>
+				</property>
+
+				<property>
+					<name>mapreduce.job.inputformat.class</name>
+					<value>org.apache.hadoop.mapreduce.lib.input.TextInputFormat
+					</value>
+				</property>
+				<property>
+					<name>mapreduce.job.outputformat.class</name>
+					<value>org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
+					</value>
+				</property>
+				<property>
+					<name>mapreduce.job.output.key.class</name>
+					<value>org.apache.hadoop.io.Text</value>
+				</property>
+				<property>
+					<name>mapreduce.job.output.value.class</name>
+					<value>org.apache.hadoop.io.DoubleWritable</value>
+				</property>
+
+				<property>
+					<name>mapreduce.input.fileinputformat.inputdir</name>
+					<value>${inputFile}</value>
+				</property>
+				<property>
+					<name>mapreduce.output.fileoutputformat.outputdir</name>
+					<value>${intermediateDir}</value>
+				</property>
+			</configuration>
+		</map-reduce>
+		<ok to="find-max-cost" />
+		<error to="fail" />
+	</action>
+	<action name="find-max-cost">
+		<map-reduce>
+			<job-tracker>${jobTracker}</job-tracker>
+			<name-node>${nameNode}</name-node>
+			<configuration>
+				<property>
+					<name>mapred.mapper.new-api</name>
+					<value>true</value>
+				</property>
+				<property>
+					<name>mapred.reducer.new-api</name>
+					<value>true</value>
+				</property>
+				<property>
+					<name>mapred.job.queue.name</name>
+					<value>${queueName}</value>
+				</property>
+				<property>
+					<name>mapreduce.job.map.class</name>
+					<value>pl.edu.agh.wieit.sius.big_data_1.MaxCostReducer</value>
+				</property>
+				<property>
+					<name>mapreduce.job.combine.class</name>
+					<value>pl.edu.agh.wieit.sius.big_data_1.MaxCostReducer</value>
+				</property>
+				<property>
+					<name>mapreduce.job.reduce.class</name>
+					<value>pl.edu.agh.wieit.sius.big_data_1.MaxCostReducer</value>
+				</property>
+
+				<property>
+					<name>mapreduce.job.inputformat.class</name>
+					<value>org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat
+					</value>
+				</property>
+				<property>
+					<name>mapreduce.job.outputformat.class</name>
+					<value>org.apache.hadoop.mapreduce.lib.output.TextOutputFormat
+					</value>
+				</property>
+				<property>
+					<name>mapreduce.job.output.key.class</name>
+					<value>org.apache.hadoop.io.Text</value>
+				</property>
+				<property>
+					<name>mapreduce.job.output.value.class</name>
+					<value>org.apache.hadoop.io.DoubleWritable</value>
+				</property>
+
+				<property>
+					<name>mapreduce.input.fileinputformat.inputdir</name>
+					<value>${intermediateDir}</value>
+				</property>
+				<property>
+					<name>mapreduce.output.fileoutputformat.outputdir</name>
+					<value>${outputDir}</value>
+				</property>
+			</configuration>
+		</map-reduce>
+		<ok to="clean-up" />
+		<error to="fail" />
+	</action>
+
+	<action name="clean-up">
+		<fs>
+			<delete path='${nameNode}${intermediateDir}' />
+		</fs>
+		<ok to="end" />
+		<error to="end" />
+	</action>
+
+	<kill name="fail">
+		<message>Task failed, reason:
+			message[${wf:errorMessage(wf:lastErrorNode())}]
+		</message>
+	</kill>
+	<end name="end" />
+</workflow-app>
